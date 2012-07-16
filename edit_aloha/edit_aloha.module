@@ -44,13 +44,7 @@ function edit_aloha_library() {
       '#type' => 'markup',
       '#markup' => '<script type="text/javascript">' .
         'Aloha = {};' .
-        'Aloha.settings = {' .
-          'baseUrl: "' . file_create_url(libraries_get_path('aloha') .'/aloha/lib') . '",' .
-          "plugins: {" .
-            "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
-            "list: {config : [ 'ul', 'ol' ] }," .
-          '}' .
-        ' };' .
+        'Aloha.deferInit = true;' .
         '</script>',
     ),
     'edit-aloha'
@@ -83,10 +77,24 @@ function edit_aloha_library() {
         'data' => array('edit' => array('wysiwyg' => 'edit_aloha')),
         'type' => 'setting',
       ),
+      array(
+        'data' => 'Aloha.settings = {' .
+          'baseUrl: "' . file_create_url(libraries_get_path('aloha') .'/aloha/lib') . '",' .
+          "plugins: {" .
+            "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
+            "list: {config : [ 'ul', 'ol' ] }," .
+          '}' .
+        ' };',
+        'type' => 'inline',
+      )
     ),
     'css' => array(
       libraries_get_path('aloha') . '/aloha/css/aloha.css',
     ),
+    /*'dependencies' => array(
+      array('system', 'jquery'),
+      array('system', 'ui.all'),
+    ),*/
   );
 
   return $libraries;
