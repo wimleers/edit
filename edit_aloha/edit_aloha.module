@@ -4,7 +4,6 @@
  * Implements hook_library().
  */
 function edit_aloha_library() {
-	die('here we are');
   if (!in_array('alohaeditor', array_keys(libraries_get_libraries()))) {
     // Display a message when aloha is not found.
     drupal_set_message(check_plain(t('You need to download !aloha and extract the entire contents of the archive into the %path folder of your server.', array('!aloha' => l(t('Aloha Editor'), 'http://www.aloha-editor.org/'), '%path' => 'sites/all/libraries/alohaeditor'))), 'error', FALSE);
@@ -46,7 +45,7 @@ function edit_aloha_library() {
       '#markup' => '<script type="text/javascript">' .
         'Aloha = {};' .
         'Aloha.settings = {' .
-          'baseUrl: "' . file_create_url(libraries_get_path('aloha') .'/aloha/lib') . '",' .
+          'baseUrl: "' . file_create_url(libraries_get_path('alohaeditor') .'/aloha/lib') . '",' .
           "plugins: {" .
             "load: \"" . $plugins_activated . "\", " .
             "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
