@@ -16,6 +16,7 @@ function edit_aloha_library() {
   // the Aloha Editor developers.
   $plugins_list = array(
     'list' => drupal_map_assoc(array(
+      'common/ui',
       'common/format',
       'common/align',
       'common/commands',
@@ -44,9 +45,9 @@ function edit_aloha_library() {
       '#markup' => '<script type="text/javascript">' .
         'Aloha = {};' .
         'Aloha.settings = {' .
-          'baseUrl: "' . url(libraries_get_path('alohaeditor') .'/aloha/lib') . '",' .
-          "plugins: { " .
-			"load: \"" . $plugins_activated . "\", " .
+          'baseUrl: "' . file_create_url(libraries_get_path('aloha') .'/aloha/lib') . '",' .
+          "plugins: {" .
+            "load: \"" . $plugins_activated . "\", " .
             "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
             "list: {config : [ 'ul', 'ol' ] }," .
           '}' .
@@ -55,13 +56,22 @@ function edit_aloha_library() {
     ),
     'edit-aloha'
   );
-
+  $aloha_path = libraries_get_path('aloha');
   $libraries['edit_aloha'] = array(
     'title' => 'Edit: Aloha Editor',
     'website' => 'http://drupal.org/project/edit',
     'version' => NULL, // @TODO Figure out the correct way to do this.
     'js' => array(
+<<<<<<< HEAD
       libraries_get_path('alohaeditor') . '/aloha/lib/aloha.js' => array(
+=======
+      $aloha_path . '/aloha/lib/require.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => -1001,
+        'defer' => TRUE,
+      ),
+      $aloha_path . '/aloha/lib/aloha.js' => array(
+>>>>>>> e450d0a39e99b79022288a813b97c43d03beb008
         'group' => JS_LIBRARY,
         'weight' => -1000,
         'defer' => TRUE,
