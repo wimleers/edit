@@ -4,9 +4,9 @@
  * Implements hook_library().
  */
 function edit_aloha_library() {
-  if (!in_array('aloha', array_keys(libraries_get_libraries()))) {
+  if (!in_array('alohaeditor', array_keys(libraries_get_libraries()))) {
     // Display a message when aloha is not found.
-    drupal_set_message(check_plain(t('You need to download !aloha and extract the entire contents of the archive into the %path folder of your server.', array('!aloha' => l(t('Aloha Editor'), 'http://www.aloha-editor.org/'), '%path' => 'sites/all/libraries/aloha'))), 'error', FALSE);
+    drupal_set_message(check_plain(t('You need to download !aloha and extract the entire contents of the archive into the %path folder of your server.', array('!aloha' => l(t('Aloha Editor'), 'http://www.aloha-editor.org/'), '%path' => 'sites/all/libraries/alohaeditor'))), 'error', FALSE);
     return FALSE;
   }
 
@@ -44,8 +44,9 @@ function edit_aloha_library() {
       '#markup' => '<script type="text/javascript">' .
         'Aloha = {};' .
         'Aloha.settings = {' .
-          'baseUrl: "' . url(libraries_get_path('aloha') .'/aloha/lib') . '",' .
-          "plugins: {" .
+          'baseUrl: "' . url(libraries_get_path('alohaeditor') .'/aloha/lib') . '",' .
+          "plugins: { " .
+			"load: \"" . $plugins_activated . "\", " .
             "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
             "list: {config : [ 'ul', 'ol' ] }," .
           '}' .
@@ -60,13 +61,10 @@ function edit_aloha_library() {
     'website' => 'http://drupal.org/project/edit',
     'version' => NULL, // @TODO Figure out the correct way to do this.
     'js' => array(
-      libraries_get_path('aloha') . '/aloha/lib/aloha.js' => array(
+      libraries_get_path('alohaeditor') . '/aloha/lib/aloha.js' => array(
         'group' => JS_LIBRARY,
         'weight' => -1000,
         'defer' => TRUE,
-        'attributes' => array(
-          'data-aloha-plugins' => $plugins_activated,
-        ),
       ),
       drupal_get_path('module', 'edit_aloha') . '/js/edit_aloha.js' => array(
         'defer' => TRUE,
@@ -79,7 +77,7 @@ function edit_aloha_library() {
       ),
     ),
     'css' => array(
-      libraries_get_path('aloha') . '/aloha/css/aloha.css',
+      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
     ),
   );
 
