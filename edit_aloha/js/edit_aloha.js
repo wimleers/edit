@@ -48,6 +48,7 @@ Drupal.edit.wysiwyg.edit_aloha = {
   },
 
   // Workaround for http://drupal.org/node/1404584
+  // @TODO can be removed with AE jQuery-UI branch
   _fixExtJsArrayPrototypeOverride: function () {
     if (Array.prototype.remove) {
       delete Array.prototype.remove;
