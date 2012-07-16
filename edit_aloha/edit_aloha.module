@@ -4,6 +4,7 @@
  * Implements hook_library().
  */
 function edit_aloha_library() {
+	die('here we are');
   if (!in_array('alohaeditor', array_keys(libraries_get_libraries()))) {
     // Display a message when aloha is not found.
     drupal_set_message(check_plain(t('You need to download !aloha and extract the entire contents of the archive into the %path folder of your server.', array('!aloha' => l(t('Aloha Editor'), 'http://www.aloha-editor.org/'), '%path' => 'sites/all/libraries/alohaeditor'))), 'error', FALSE);
@@ -56,22 +57,18 @@ function edit_aloha_library() {
     ),
     'edit-aloha'
   );
-  $aloha_path = libraries_get_path('aloha');
+  $aloha_path = libraries_get_path('alohaeditor');
   $libraries['edit_aloha'] = array(
     'title' => 'Edit: Aloha Editor',
     'website' => 'http://drupal.org/project/edit',
     'version' => NULL, // @TODO Figure out the correct way to do this.
     'js' => array(
-<<<<<<< HEAD
-      libraries_get_path('alohaeditor') . '/aloha/lib/aloha.js' => array(
-=======
       $aloha_path . '/aloha/lib/require.js' => array(
         'group' => JS_LIBRARY,
         'weight' => -1001,
         'defer' => TRUE,
       ),
       $aloha_path . '/aloha/lib/aloha.js' => array(
->>>>>>> e450d0a39e99b79022288a813b97c43d03beb008
         'group' => JS_LIBRARY,
         'weight' => -1000,
         'defer' => TRUE,
