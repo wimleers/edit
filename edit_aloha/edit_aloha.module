@@ -63,7 +63,7 @@ function edit_aloha_library() {
   );
 
   // Edit integration (".edit").
-  $libraries['edit.aloha'] = array(
+  $libraries['edit_aloha.edit'] = array(
     'title' => 'Edit: Aloha Editor integration',
     'website' => 'http://drupal.org/project/edit',
     'version' => NULL, // @TODO Figure out the correct way to do this.
@@ -82,13 +82,13 @@ function edit_aloha_library() {
       ),
     ),
     'dependencies' => array(
-      array('edit_aloha', 'aloha'),
+      array('edit_aloha', 'edit_aloha.wysiwyg'),
     ),
   );
 
   $aloha_path = libraries_get_path('alohaeditor') . '/aloha/';
   // The WYSIWYG files themselves (".wysiwyg").
-  $libraries['aloha'] = array(
+  $libraries['edit_aloha.wysiwyg'] = array(
     'title' => 'Edit: Aloha Editor',
     'website' => 'http://aloha-editor.org/',
     'version' => NULL, // @TODO Figure out the correct way to do this.
@@ -126,8 +126,6 @@ function edit_aloha_library() {
   $libraries['aloha.common.abbr'] = array(
     'js' => array($common_path . '/abbr/lib/abbr.js' => array('defer' => TRUE)),
   ) + $plugin_default;
-
-
 
   return $libraries;
 }
