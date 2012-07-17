@@ -16,19 +16,29 @@ function edit_wysiwyg_analyze_field_editability($entity_type, $entity, $field_na
   // The field must be configured to use text processing.
   list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
   $instance_info = field_info_instance($entity_type, $field_name, $bundle);
-  $plain_text = ($instance_info['settings']['text_processing'] == 0);
-  if ($plain_text) {
+
+  if (empty($instance_info['settings']['text_processing'])) {
     // This field is configured to not use text processing; hence fall back to
     // "form".
     return 'form';
   }
+  // Bail out with an appropriate warning if, for an unknown reason, the field
+  // has text processing enabled, but no format is assigned yet (NULL).
+  elseif (empty($format_id)) {
+    drupal_set_message(t('Text format could not be detected.'), 'warning');
+    return 'disabled';
+  }
   else {
     // The final analysis. Analyzes the compatibility with a WYSIWYG based on
     // the formats used.
-    if (!edit_wysiwyg_analyze_format_compatibility($format_id)) {
+    $filters = filter_list_format($format_id);
+    if (!edit_wysiwyg_analyze_format_compatibility($filters)) {
       return 'disabled';
     }
-    else {
+    // Check whether HTML filter is enabled.
+    // @todo Core: Provide a generic + reliable facility for determining text
+    //   processors and security filters in a text format.
+    if (!empty($filters['filter_html']->status)) {
       // Extract allowed tags; ensure these include the essential tags.
       $allowed_tags = edit_wysiwyg_analyze_allowed_tags($format_id);
       $essential_missing_tags = edit_wysiwyg_essential_tags_missing($allowed_tags);
@@ -36,7 +46,6 @@ function edit_wysiwyg_analyze_field_editability($entity_type, $entity, $field_na
         // @TODO: handle this more elegantly. And only show it to users with
         // sufficient permissions.
         $formats = filter_formats();
-        $filters = filter_list_format($format_id);
         $filters_with_allowed_tags = array_map(function($filter) {
           $filters = filter_get_filters();
           return $filters[$filter]['title'];
@@ -71,15 +80,15 @@ function edit_wysiwyg_analyze_field_editability($entity_type, $entity, $field_na
  * Analyze text format for WYSIWYG compatibility: every enabled filter must be
  * marked as compatible with WYSIWYG.
  *
- * @param $format_id
- *   A text format ID.
- * @return
+ * @param array $filters
+ *   A list of filters in a potentially editable text field, as provided by
+ *   filter_list_format().
+ *
+ * @return bool
  *   A boolean value that indicates whether the given text format is compatible
  *   with WYSIWYG.
  */
-function edit_wysiwyg_analyze_format_compatibility($format_id) {
-  $filters = filter_list_format($format_id);
-
+function edit_wysiwyg_analyze_format_compatibility($filters) {
   // Ignore filters that are disabled.
   $filters = array_filter($filters, function($filter) {
     return $filter->status == 1;
