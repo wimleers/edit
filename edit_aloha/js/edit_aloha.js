@@ -6,13 +6,6 @@
 (function($, window, undefined) {
 var Aloha = window.Aloha || (window.Aloha = {});
 
-// @TODO: this is a currently futile attempt to get AE to use Drupal's jQuery.
-// It is futile, because AE's JS is loaded before this one and thus it will
-// already be too late.
-// Aloha.settings = {
-//    jQuery: $,
-// };
-
 Drupal.edit.wysiwyg.edit_aloha = {
   init: function() {
     console.log('edit_aloha:initializing');

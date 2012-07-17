@@ -53,7 +53,7 @@ function edit_aloha_library() {
   }
 
   $aloha_settings = array(
-    'baseUrl' => file_create_url(libraries_get_path('aloha') .'/aloha/lib'),
+    'baseUrl' => file_create_url(libraries_get_path('alohaeditor') .'/aloha/lib'),
     'plugins' => array(
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
@@ -77,12 +77,12 @@ function edit_aloha_library() {
         'weight' => -1000,
         'defer' => TRUE,
         'attributes' => array(
-          'data-aloha-defer-init' => 'true'
+            'data-aloha-defer-init' => 'true'
         ),
       ),
     ),
     'css' => array(
-      libraries_get_path('aloha') . '/aloha/css/aloha.css',
+      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
     ),
   );
   // Edit integration (".edit").
