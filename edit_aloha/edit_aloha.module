@@ -58,33 +58,10 @@ function edit_aloha_library() {
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
+      'contentHandler' => array('handler' => array( 'generic' => array('transformFormattings' => false))),
     ),
   );
-  $aloha_path = libraries_get_path('alohaeditor');
-  // The WYSIWYG files themselves (".wysiwyg").
-  $libraries['edit_aloha.wysiwyg'] = array(
-    'title' => 'Edit: Aloha Editor',
-    'website' => 'http://aloha-editor.org/',
-    'version' => NULL, // @TODO Figure out the correct way to do this.
-    'js' => array(
-      $aloha_path . '/aloha/lib/require.js' => array(
-        'group' => JS_LIBRARY,
-        'weight' => -1001,
-        'defer' => TRUE,
-      ),
-      $aloha_path . '/aloha/lib/aloha.js' => array(
-        'group' => JS_LIBRARY,
-        'weight' => -1000,
-        'defer' => TRUE,
-        'attributes' => array(
-            'data-aloha-defer-init' => 'true'
-        ),
-      ),
-    ),
-    'css' => array(
-      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
-    ),
-  );
+
   // Edit integration (".edit").
   $libraries['edit_aloha.edit'] = array(
     'title' => 'Edit: Aloha Editor integration',
@@ -108,6 +85,47 @@ function edit_aloha_library() {
       array('edit_aloha', 'edit_aloha.wysiwyg'),
     ),
   );
+
+  $aloha_path = libraries_get_path('alohaeditor') . '/aloha/';
+  // The WYSIWYG files themselves (".wysiwyg").
+  $libraries['edit_aloha.wysiwyg'] = array(
+    'title' => 'Edit: Aloha Editor',
+    'website' => 'http://aloha-editor.org/',
+    'version' => NULL, // @TODO Figure out the correct way to do this.
+    'js' => array(
+      $aloha_path . '/lib/require.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => -1001,
+        'defer' => TRUE,
+      ),
+      $aloha_path . '/lib/aloha.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => -1000,
+        'defer' => TRUE,
+        'attributes' => array(
+            'data-aloha-defer-init' => 'true'
+        ),
+      ),
+    ),
+    'css' => array(
+      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
+    ),
+  );
+
+  $plugin_default = array(
+    'title' => 'Aloha Plugin',
+    'version' => 'x',
+    'dependencies' => array(
+      array('edit_aloha', 'aloha'),
+    ),
+  );
+
+  // @todo reference all the plugins.
+  $common_path = $aloha_path . '/common';
+  // Plugin registration
+  $libraries['aloha.common.abbr'] = array(
+    'js' => array($common_path . '/abbr/lib/abbr.js' => array('defer' => TRUE)),
+  ) + $plugin_default;
 
   return $libraries;
 }
@@ -149,7 +167,7 @@ function edit_aloha_link_lookup($lookup = false) {
   if (is_array($search_results)) {
     $json = array();
     foreach ($search_results as $result) {
-      $json[] = array('u' => $result['link'], 't' => $result['title']);
+      $json[] = array('u' => $result['link'], 't' => $result['title'], 's' => $result['score']);
     }
     print drupal_json_encode($json);
     exit;
