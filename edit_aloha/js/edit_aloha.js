@@ -16,8 +16,9 @@ var Aloha = window.Aloha || (window.Aloha = {});
 Drupal.edit.wysiwyg.edit_aloha = {
   init: function() {
     console.log('edit_aloha:initializing');
-    this._fixExtJsArrayPrototypeOverride();
 
+    Aloha.settings = Drupal.settings.edit.settings;
+    Aloha.deferInit();
     Aloha.ready(function() {
       $(document).trigger('edit-wysiwyg-ready');
     });
@@ -45,25 +46,7 @@ Drupal.edit.wysiwyg.edit_aloha = {
     if (id.match(/^edit-aloha-\d+$/) != null) {
       $editable.removeAttr('id');
     }
-  },
-
-  // Workaround for http://drupal.org/node/1404584
-  // @TODO can be removed with AE jQuery-UI branch
-  _fixExtJsArrayPrototypeOverride: function () {
-    if (Array.prototype.remove) {
-      delete Array.prototype.remove;
-      Ext.applyIf(Array.prototype, {
-        remove: function (o) {
-          if (!this.indexOf) return this;
-          var index = this.indexOf(o);
-          if (index != -1) {
-            this.splice(index, 1);
-          }
-          return this;
-        }
-      });
-    }
-  },
+  }
 };
 
 })(jQuery, window);

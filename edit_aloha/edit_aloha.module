@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * Implements hook_menu()
+ */
+function edit_aloha_menu() {
+  $items = array();
+  $items['alohaeditor/lookup/%'] = array(
+      'page callback' => 'edit_alohaeditor_link_lookup',
+      'page arguments' => array(2),
+      'access arguments' => array('access content'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_library().
  */
 function edit_aloha_library() {
@@ -37,26 +52,13 @@ function edit_aloha_library() {
     $plugins_activated = substr($plugins_activated, 0, -1);
   }
 
-  // Make sure Aloha.settings exist before the actual JS loading.
-  // @TODO: clean this up and generate these settings based on the input
-  // formats being used on this page; this is a work-around for Aloha
-  // limitations.
-  drupal_add_html_head(
-    array(
-      '#type' => 'markup',
-      '#markup' => '<script type="text/javascript">' .
-        'Aloha = {};' .
-        'Aloha.settings = {' .
-          'baseUrl: "' . file_create_url(libraries_get_path('alohaeditor') .'/aloha/lib') . '",' .
-          "plugins: {" .
-            "load: \"" . $plugins_activated . "\", " .
-            "format: { config: [  'strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ]}," .
-            "list: {config : [ 'ul', 'ol' ] }," .
-          '}' .
-        ' };' .
-        '</script>',
+  $aloha_settings = array(
+    'baseUrl' => file_create_url(libraries_get_path('aloha') .'/aloha/lib'),
+    'plugins' => array(
+      'load' => $plugins_activated,
+      'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
+      'list' => array('config' => array('ul', 'ol')),
     ),
-    'edit-aloha'
   );
   $aloha_path = libraries_get_path('alohaeditor');
   $libraries['edit_aloha'] = array(
@@ -73,6 +75,9 @@ function edit_aloha_library() {
         'group' => JS_LIBRARY,
         'weight' => -1000,
         'defer' => TRUE,
+        'attributes' => array(
+          'data-aloha-defer-init' => 'true'
+        ),
       ),
       drupal_get_path('module', 'edit_aloha') . '/js/edit_aloha.js' => array(
         'defer' => TRUE,
@@ -80,7 +85,10 @@ function edit_aloha_library() {
       ),
       // Configure Edit's JS to use edit_aloha as the WYSIWYG.
       array(
-        'data' => array('edit' => array('wysiwyg' => 'edit_aloha')),
+        'data' => array('edit' => array(
+          'wysiwyg' => 'edit_aloha',
+          'settings' => $aloha_settings,
+        )),
         'type' => 'setting',
       ),
     ),
@@ -112,4 +120,31 @@ function _edit_wysiwyg_tag_to_aloha_plugin($tag) {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements API for AE - Drupal link repository
+ */
+function edit_alohaeditor_link_lookup($lookup = false) {
+	$lookup = check_plain($lookup);
+
+	$search_results = node_search_execute($lookup);
+	//watchdog('aloha editor', 'search results: '.print_r($search_results, true));
+
+	if (is_array($search_results) && empty($search_results[0])) {
+		$search_results = false;
+	}
+
+	header('Content-Type:text/javascript');
+	if (is_array($search_results)) {
+		$out = '[';
+		foreach ($search_results as $result) {
+			$out .= '{"u":"'.$result['link'].'","d":"'.$result['title'].'","a":"","t":[""],"dt":"","n":""},';
+		}
+		$out = substr($out, 0, -1);
+		$out .= ']';
+		echo $out;
+	} else {
+		echo '[]';
+	}
 }
