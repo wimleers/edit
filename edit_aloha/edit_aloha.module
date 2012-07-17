@@ -38,6 +38,8 @@ function edit_aloha_library() {
       'common/contenthandler',
       'common/paste',
       'common/list',
+      'common/link',
+      'extra/drupal',
     )),
   );
   $plugins_activated = '';
@@ -58,6 +60,7 @@ function edit_aloha_library() {
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
+      'contentHandler' => array('handler' => array( 'generic' => array('transformFormattings' => false)),
     ),
   );
   $aloha_path = libraries_get_path('alohaeditor');
@@ -95,6 +98,20 @@ function edit_aloha_library() {
         'defer' => TRUE,
         'weight' => 100,
       ),
+      /* // Drupal AE plugin
+      drupal_get_path('module', 'edit_aloha') . '/aloha/drupal/lib/drupal-plugin.js' => array(
+        'defer' => false,
+        'weight' => 101,
+      ),
+      drupal_get_path('module', 'edit_aloha') . '/aloha/drupal/lib/repository.js' => array(
+          'defer' => false,
+          'weight' => 102,
+      ),
+      drupal_get_path('module', 'edit_aloha') . '/aloha/drupal/lib/drupalcontenthandler.js' => array(
+            'defer' => false,
+            'weight' => 103,
+      ),
+      */
       // Configure Edit's JS to use edit_aloha as the WYSIWYG.
       array(
         'data' => array('edit' => array(
