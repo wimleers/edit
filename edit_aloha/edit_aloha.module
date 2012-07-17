@@ -39,7 +39,7 @@ function edit_aloha_library() {
       'common/contenthandler',
       'common/paste',
       /*'common/link',
-      'extra/drupal',*/
+      'edit_aloha/drupal',*/
     )),
   );
   $plugins_activated = '';
@@ -53,15 +53,17 @@ function edit_aloha_library() {
   if (substr($plugins_activated, -1) == ',') {
     $plugins_activated = substr($plugins_activated, 0, -1);
   }
-
+  
   $aloha_settings = array(
     'baseUrl' => file_create_url(libraries_get_path('alohaeditor') .'/aloha/lib'),
     'plugins' => array(
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
-      'contentHandler' => array('handler' => array( 'generic' => array('transformFormattings' => false))),
     ),
+    'bundles' => array('edit_aloha' => '../../../../../../' . drupal_get_path('module', 'edit') . '/edit_aloha/aloha/'), // @todo maybe don't use bundles feature
+    'contentHandler' => array( 'insertHtml' => array('word', 'generic', 'drupal'),
+                              'handler' => array( 'generic' => array('transformFormattings' => false))),
   );
   $aloha_path = libraries_get_path('alohaeditor');
   // The WYSIWYG files themselves (".wysiwyg").
