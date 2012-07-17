@@ -60,7 +60,7 @@ function edit_aloha_library() {
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
-      'contentHandler' => array('handler' => array( 'generic' => array('transformFormattings' => false)),
+      'contentHandler' => array('handler' => array( 'generic' => array('transformFormattings' => false))),
     ),
   );
   $aloha_path = libraries_get_path('alohaeditor');
