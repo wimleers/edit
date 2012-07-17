@@ -32,14 +32,14 @@ function edit_aloha_library() {
   $plugins_list = array(
     'list' => drupal_map_assoc(array(
       'common/ui',
-      'common/format',
       'common/align',
+      'common/format',
+      'common/list',
       'common/commands',
       'common/contenthandler',
       'common/paste',
-      'common/list',
-      'common/link',
-      'extra/drupal',
+      /*'common/link',
+      'extra/drupal',*/
     )),
   );
   $plugins_activated = '';
