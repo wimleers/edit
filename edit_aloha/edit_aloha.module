@@ -60,33 +60,9 @@ function edit_aloha_library() {
       'list' => array('config' => array('ul', 'ol')),
     ),
   );
-  $aloha_path = libraries_get_path('alohaeditor');
-  // The WYSIWYG files themselves (".wysiwyg").
-  $libraries['edit_aloha.wysiwyg'] = array(
-    'title' => 'Edit: Aloha Editor',
-    'website' => 'http://aloha-editor.org/',
-    'version' => NULL, // @TODO Figure out the correct way to do this.
-    'js' => array(
-      $aloha_path . '/aloha/lib/require.js' => array(
-        'group' => JS_LIBRARY,
-        'weight' => -1001,
-        'defer' => TRUE,
-      ),
-      $aloha_path . '/aloha/lib/aloha.js' => array(
-        'group' => JS_LIBRARY,
-        'weight' => -1000,
-        'defer' => TRUE,
-        'attributes' => array(
-            'data-aloha-defer-init' => 'true'
-        ),
-      ),
-    ),
-    'css' => array(
-      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
-    ),
-  );
+
   // Edit integration (".edit").
-  $libraries['edit_aloha.edit'] = array(
+  $libraries['edit.aloha'] = array(
     'title' => 'Edit: Aloha Editor integration',
     'website' => 'http://drupal.org/project/edit',
     'version' => NULL, // @TODO Figure out the correct way to do this.
@@ -105,9 +81,52 @@ function edit_aloha_library() {
       ),
     ),
     'dependencies' => array(
-      array('edit_aloha', 'edit_aloha.wysiwyg'),
+      array('edit_aloha', 'aloha'),
     ),
   );
+
+  $aloha_path = libraries_get_path('alohaeditor') . '/aloha/';
+  // The WYSIWYG files themselves (".wysiwyg").
+  $libraries['aloha'] = array(
+    'title' => 'Edit: Aloha Editor',
+    'website' => 'http://aloha-editor.org/',
+    'version' => NULL, // @TODO Figure out the correct way to do this.
+    'js' => array(
+      $aloha_path . '/lib/require.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => -1001,
+        'defer' => TRUE,
+      ),
+      $aloha_path . '/lib/aloha.js' => array(
+        'group' => JS_LIBRARY,
+        'weight' => -1000,
+        'defer' => TRUE,
+        'attributes' => array(
+            'data-aloha-defer-init' => 'true'
+        ),
+      ),
+    ),
+    'css' => array(
+      libraries_get_path('alohaeditor') . '/aloha/css/aloha.css',
+    ),
+  );
+
+  $plugin_default = array(
+    'title' => 'Aloha Plugin',
+    'version' => 'x',
+    'dependencies' => array(
+      array('edit_aloha', 'aloha'),
+    ),
+  );
+
+  // @todo reference all the plugins.
+  $common_path = $aloha_path . '/common';
+  // Plugin registration
+  $libraries['aloha.common.abbr'] = array(
+    'js' => array($common_path . '/abbr/lib/abbr.js' => array('defer' => TRUE)),
+  ) + $plugin_default;
+
+
 
   return $libraries;
 }
