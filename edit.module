@@ -255,6 +255,7 @@ function edit_field_formatter_info_alter(&$info) {
     'text_trimmed'            => 'disabled',
     'text_summary_or_trimmed' => 'disabled',
     'text_textarea'           => 'direct',
+    /*'text_textfield'          => 'direct', // @todo should be possible; blocking of <br> & <p> would make sense */
   );
   $wysiwyg_metadata = array(
     'text_default' => TRUE,

@@ -12,7 +12,8 @@
 function edit_field_widget_info_alter(&$info) {
   $wysiwyg_metadata = array(
     'text_textarea_with_summary',
-    'text_textarea'
+    'text_textarea',
+    /* 'text_textfield' // @todo should be possible; blocking of <br> & <p> would make sense */
   );
 
   foreach ($wysiwyg_metadata as $widget) {
