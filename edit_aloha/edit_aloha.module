@@ -46,6 +46,8 @@ function edit_aloha_library() {
       'common/commands',
       'common/contenthandler',
       'common/paste',
+      'common/block',
+      'extra/captioned-image',
       /*'common/link',
       'edit_aloha/drupal',*/
     )),
@@ -70,8 +72,11 @@ function edit_aloha_library() {
       'list' => array('config' => array('ul', 'ol')),
     ),
     'bundles' => array('edit_aloha' => '../../../../../../' . drupal_get_path('module', 'edit') . '/edit_aloha/aloha/'), // @todo maybe don't use bundles feature
-    'contentHandler' => array( 'insertHtml' => array('word', 'generic', 'drupal'),
-                              'handler' => array( 'generic' => array('transformFormattings' => false))),
+	'contentHandler' => array(
+		'insertHtml' => array('word', 'generic', 'drupal'),
+		'initEditable' => array(),
+		'handler' => array( 'generic' => array('transformFormattings' => false))
+	),
   );
 
   // Edit integration (".edit").
