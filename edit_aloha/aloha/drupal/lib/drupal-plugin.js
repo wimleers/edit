@@ -64,15 +64,6 @@ define( [
             ContentHandlerManager.register('drupal', DrupalContentHandler);
 
             Aloha.bind( 'aloha-editable-activated', function( $event, params ) {
-                
-                if ( params.editable.obj.is('.caption') ) {
-                    //window.console.log('***** found caption *****');
-                    jQuery('.aloha-ui-toolbar').hide();
-                    //return;
-                } else {
-                    jQuery('.aloha-ui-toolbar').show();
-                }
-                
                 // @todo note: this hides the tabs
                 //jQuery('.ui-widget-header').hide();
 
