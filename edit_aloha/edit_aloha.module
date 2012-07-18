@@ -68,10 +68,12 @@ function edit_aloha_library() {
       'load' => $plugins_activated,
       'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
+      'block' => array('sidebarAttributeEditor' => FALSE),
     ),
     'bundles' => array('edit_aloha' => '../../../../../../' . drupal_get_path('module', 'edit') . '/edit_aloha/aloha/'), // @todo maybe don't use bundles feature
     'contentHandler' => array( 'insertHtml' => array('word', 'generic', 'drupal'),
                               'handler' => array( 'generic' => array('transformFormattings' => false))),
+    'sidebar' => array('disabled' => TRUE),
   );
 
   // Edit integration (".edit").
