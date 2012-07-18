@@ -80,8 +80,8 @@ function edit_aloha_library() {
                 'label' => 'Captioned Image',
                 'showOn' => array('scope' => 'Aloha.captionedimage'),
                 'components' => array('imgFloatLeft', 'imgFloatRight', 'imgFloatClear') 
-            )   
-        )   
+            )
+        )
     ),
   );
 
