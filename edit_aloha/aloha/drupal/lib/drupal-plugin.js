@@ -64,8 +64,17 @@ define( [
             ContentHandlerManager.register('drupal', DrupalContentHandler);
 
             Aloha.bind( 'aloha-editable-activated', function( $event, params ) {
+                
+                if ( params.editable.obj.is('.caption') ) {
+                    //window.console.log('***** found caption *****');
+                    jQuery('.aloha-ui-toolbar').hide();
+                    //return;
+                } else {
+                    jQuery('.aloha-ui-toolbar').show();
+                }
+                
                 // @todo note: this hides the tabs
-                jQuery('.ui-widget-header').hide();
+                //jQuery('.ui-widget-header').hide();
 
                 dataAttr = Aloha.activeEditable.obj.closest('.edit-field').data();
                 if ( dataAttr && dataAttr.editAllowedTags ) {
@@ -100,7 +109,6 @@ define( [
             
             Aloha.bind( 'aloha-editable-deactivated', function( $event, params ) {
                 jQuery.each(elementMapping, function( element, css ) {
-                    //window.console.log('*** element', element, css);
                     if ( jQuery.inArray(element, allows) == -1 ) {
                         if (/large-icon/.test(css)) {
                             jQuery('.' + css).closest('button').show();
