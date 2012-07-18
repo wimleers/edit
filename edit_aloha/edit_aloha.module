@@ -46,8 +46,8 @@ function edit_aloha_library() {
       'common/commands',
       'common/contenthandler',
       'common/paste',
-      /*'common/link',
-      'edit_aloha/drupal',*/
+      'common/link',
+      'edit_aloha/drupal'
     )),
   );
   $plugins_activated = '';
@@ -61,12 +61,12 @@ function edit_aloha_library() {
   if (substr($plugins_activated, -1) == ',') {
     $plugins_activated = substr($plugins_activated, 0, -1);
   }
-  
+
   $aloha_settings = array(
     'baseUrl' => file_create_url($library_path . '/lib'),
     'plugins' => array(
       'load' => $plugins_activated,
-      'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
+      'format' => array('config' => array('u', 'strong', 'em', 'b', 'i', 's', 'sub', 'sup', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
     ),
     'bundles' => array('edit_aloha' => '../../../../../../' . drupal_get_path('module', 'edit') . '/edit_aloha/aloha/'), // @todo maybe don't use bundles feature
