@@ -43,6 +43,7 @@ function edit_aloha_library() {
       'common/list',
       'common/commands',
       'common/contenthandler',
+      'common/characterpicker',
       'common/paste',
       'common/link',
       'extra/captioned-image',
