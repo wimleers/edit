@@ -33,21 +33,21 @@ function edit_aloha_library() {
     $library_path .= '/aloha';
   }
 
-  // @TODO: update this based on the input format settings. However, Aloha does
-  // not support multiple configurations and does not have a clear, unified way
-  // to deal with a list of allowed tags, so we'll need to figure that out with
-  // the Aloha Editor developers.
+  // @todo update this based on the input format settings.
   $plugins_list = array(
     'list' => drupal_map_assoc(array(
       'common/ui',
       'common/align',
+      'common/block',
       'common/format',
       'common/list',
       'common/commands',
       'common/contenthandler',
+      'common/characterpicker',
       'common/paste',
-      /*'common/link',
-      'edit_aloha/drupal',*/
+      'common/link',
+      'extra/captioned-image',
+      'edit_aloha/drupal'
     )),
   );
   $plugins_activated = '';
@@ -73,13 +73,25 @@ function edit_aloha_library() {
     ),
     'plugins' => array(
       'load' => $plugins_activated,
-      'format' => array('config' => array('strong', 'em', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
+      'format' => array('config' => array('u', 'strong', 'em', 'b', 'i', 's', 'sub', 'sup', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat')),
       'list' => array('config' => array('ul', 'ol')),
       'block' => array('sidebarAttributeEditor' => FALSE),
     ),
     'bundles' => array('edit_aloha' => '../../../../../../' . drupal_get_path('module', 'edit') . '/edit_aloha/aloha/'), // @todo maybe don't use bundles feature
-    'contentHandler' => array( 'insertHtml' => array('word', 'generic', 'drupal'),
-                              'handler' => array( 'generic' => array('transformFormattings' => false))),
+	'contentHandler' => array(
+		'insertHtml' => array('word', 'generic', 'drupal'),
+		'initEditable' => array(),
+		'handler' => array( 'generic' => array('transformFormattings' => false))
+	),
+   'toolbar' => array(
+        'tabs' => array(
+            array(
+                'label' => 'Captioned Image',
+                'showOn' => array('scope' => 'Aloha.captionedimage'),
+                'components' => array('imgFloatLeft', 'imgFloatRight', 'imgFloatClear') 
+            )
+        )
+    ),
     'sidebar' => array('disabled' => TRUE),
   );
 
@@ -107,6 +119,7 @@ function edit_aloha_library() {
     ),
   );
 
+  $common_path = $library_path . '/plugins/common';
   // The WYSIWYG files themselves (".wysiwyg").
   $libraries['edit_aloha.wysiwyg'] = array(
     'title' => 'Edit: Aloha Editor',
@@ -123,30 +136,26 @@ function edit_aloha_library() {
         'weight' => -1000,
         'defer' => TRUE,
         'attributes' => array(
-            'data-aloha-defer-init' => 'true'
+            'data-aloha-defer-init' => 'true',
         ),
       ),
+      // These are the files from the 'build-with-plugin-separated' profile.
+      // They should be declared as their own libraries. Listed here for
+      // convenience.
+
+      // $common_path . '/ui/lib/ui-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/align/lib/align-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/format/lib/format-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/commands/lib/commands-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/list/lib/list-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/contenthandler/lib/contenthandler-plugin.js' => array('defer' => TRUE),
+      // $common_path . '/paste/lib/paste-plugin.js' => array('defer' => TRUE),
     ),
     'css' => array(
       $library_path . '/css/aloha.css',
       drupal_get_path('module', 'edit_aloha') . '/css/edit_aloha.css',
     ),
   );
-
-  $plugin_default = array(
-    'title' => 'Aloha Plugin',
-    'version' => 'x',
-    'dependencies' => array(
-      array('edit_aloha', 'aloha'),
-    ),
-  );
-
-  // @todo reference all the plugins.
-  $common_path = $library_path . '/plugins/common';
-  // Plugin registration
-  $libraries['aloha.common.abbr'] = array(
-    'js' => array($common_path . '/abbr/lib/abbr.js' => array('defer' => TRUE)),
-  ) + $plugin_default;
 
   return $libraries;
 }
